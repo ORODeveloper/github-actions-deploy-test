@@ -1,12 +1,50 @@
+# name: Deploy React App to GitHub Pages
+
+# on:
+#   push:
+#     branches:
+#       - main  # Trigger this workflow on pushes to the 'main' branch
+#   pull_request:
+#     branches:
+#       - main  # Optionally trigger on pull requests to the main branch
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       # Checkout the code
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       # Set up Node.js
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '16'
+
+#       # Install dependencies
+#       - name: Install dependencies
+#         run: npm install
+
+#       # Build the app
+#       - name: Build the app
+#         run: npm run build
+
+#       # Deploy to GitHub Pages
+#       - name: Deploy to GitHub Pages
+#         uses: JamesIves/github-pages-deploy-action@v4
+#         with:
+#           branch: gh-pages  # This is the branch where the build will be deployed
+#           folder: build     # The folder that contains the production build
+#           token: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token to deploy
+
 name: Deploy React App to GitHub Pages
 
 on:
   push:
     branches:
-      - main  # Trigger this workflow on pushes to the 'main' branch
-  pull_request:
-    branches:
-      - main  # Optionally trigger on pull requests to the main branch
+      - main  # This ensures the workflow runs on pushes to the 'main' branch
 
 jobs:
   deploy:
@@ -35,6 +73,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages  # This is the branch where the build will be deployed
+          branch: gh-pages  # Deploy to the gh-pages branch
           folder: build     # The folder that contains the production build
           token: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token to deploy
+
