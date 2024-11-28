@@ -26,13 +26,25 @@ jobs:
         run: npm install
 
       # Build the app with dynamic PUBLIC_URL
-      - name: Build the app
-        run: |
-          if [[ ${{ github.ref }} == 'refs/heads/staging' ]]; then
-            PUBLIC_URL="/github-actions-deploy-test/staging" npm run build
-          else
-            PUBLIC_URL="/github-actions-deploy-test" npm run build
-          fi
+      # - name: Build the app
+      #   run: |
+      #     if [[ ${{ github.ref }} == 'refs/heads/staging' ]]; then
+      #       PUBLIC_URL="/github-actions-deploy-test/staging" npm run build
+      #     else
+      #       PUBLIC_URL="/github-actions-deploy-test" npm run build
+      #     fi
+
+          - name: Build the app
+  run: |
+    echo "Deploying from branch: ${{ github.ref }}"
+    if [ "${{ github.ref }}" == "refs/heads/staging" ]; then
+      echo "Setting PUBLIC_URL for staging"
+      PUBLIC_URL="/github-actions-deploy-test/staging" npm run build
+    else
+      echo "Setting PUBLIC_URL for production"
+      PUBLIC_URL="/github-actions-deploy-test" npm run build
+    fi
+
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
