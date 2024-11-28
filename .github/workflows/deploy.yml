@@ -1,4 +1,3 @@
-
 name: Deploy React App to GitHub Pages
 
 on:
@@ -28,7 +27,14 @@ jobs:
 
       # Build the app
       - name: Build the app
-        run: npm run build
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/staging" ]; then
+            echo "Setting PUBLIC_URL for staging"
+            PUBLIC_URL="/github-actions-deploy-test/staging" npm run build
+          else
+            echo "Setting PUBLIC_URL for production"
+            PUBLIC_URL="/github-actions-deploy-test" npm run build
+          fi
 
       # Deploy to GitHub Pages (staging or production)
       - name: Deploy to GitHub Pages
@@ -37,7 +43,4 @@ jobs:
           branch: gh-pages             # Deploy to the gh-pages branch
           folder: build                # Folder containing the build output
           token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
-          # Add a condition to deploy different environments based on the branch
-          # For example, you could change the deploy folder name or use subdirectories for staging
-          # If on the staging branch, deploy to /staging directory
-          destination-folder: ${{ github.ref == 'refs/heads/staging' && 'staging' || '.' }}
+          target-folder: ${{ github.ref == 'refs/heads/staging' && 'staging' || '.' }}  # Set the deploy folder based on the branch
