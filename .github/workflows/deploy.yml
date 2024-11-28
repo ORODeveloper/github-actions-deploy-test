@@ -1,12 +1,10 @@
+
 # name: Deploy React App to GitHub Pages
 
 # on:
 #   push:
 #     branches:
-#       - main  # Trigger this workflow on pushes to the 'main' branch
-#   pull_request:
-#     branches:
-#       - main  # Optionally trigger on pull requests to the main branch
+#       - main  # This ensures the workflow runs on pushes to the 'main' branch
 
 # jobs:
 #   deploy:
@@ -35,16 +33,19 @@
 #       - name: Deploy to GitHub Pages
 #         uses: JamesIves/github-pages-deploy-action@v4
 #         with:
-#           branch: gh-pages  # This is the branch where the build will be deployed
+#           branch: gh-pages  # Deploy to the gh-pages branch
 #           folder: build     # The folder that contains the production build
-#           token: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token to deploy
+#           token: ${{ secrets.GITHUB_TOKEN }} # Use GitHub token to deploy
+
+
 
 name: Deploy React App to GitHub Pages
 
 on:
   push:
     branches:
-      - main  # This ensures the workflow runs on pushes to the 'main' branch
+      - main     # Trigger on push to the 'main' branch (production)
+      - staging  # Trigger on push to the 'staging' branch (staging)
 
 jobs:
   deploy:
@@ -69,11 +70,14 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      # Deploy to GitHub Pages
+      # Deploy to GitHub Pages (staging or production)
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages  # Deploy to the gh-pages branch
-          folder: build     # The folder that contains the production build
-          token: ${{ secrets.GITHUB_TOKEN }} # Use GitHub token to deploy
-
+          branch: gh-pages             # Deploy to the gh-pages branch
+          folder: build                # Folder containing the build output
+          token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
+          # Add a condition to deploy different environments based on the branch
+          # For example, you could change the deploy folder name or use subdirectories for staging
+          # If on the staging branch, deploy to /staging directory
+          destination: ${{ github.ref == 'refs/heads/staging' && '/staging' || '/' }}
