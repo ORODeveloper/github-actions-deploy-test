@@ -8,7 +8,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>
 
-          Edit <code>src/App.js</code> I am Muqeet. deploy from actions. YML Change
+          Edit <code>src/App.js</code> I am Muqeet. deploy from actions. YML Change In stagig 
 
 
 
