@@ -121,4 +121,5 @@ jobs:
           # Add a condition to deploy different environments based on the branch
           # For example, you could change the deploy folder name or use subdirectories for staging
           # If on the staging branch, deploy to /staging directory
-          destination-folder: ${{ github.ref == 'refs/heads/staging' && 'staging' || '.' }}
+         destination-folder: ${{ github.ref == 'refs/heads/staging' && 'staging' || '.' }}
+
