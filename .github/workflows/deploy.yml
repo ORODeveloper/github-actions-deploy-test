@@ -49,4 +49,4 @@ jobs:
           branch: gh-pages             # Deploy to the gh-pages branch
           folder: build                # Folder containing the build output
           token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
-          destination-folder: ${{ github.ref == 'refs/heads/staging' && 'staging' || 'staging' }}  # Set the deploy folder based on the branch
+          # destination-folder: ${{ github.ref == 'refs/heads/staging' && 'staging' || 'staging' }}  # Set the deploy folder based on the branch
