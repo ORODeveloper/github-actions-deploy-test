@@ -3,8 +3,8 @@ name: Deploy React App to GitHub Pages
 on:
   push:
     branches:
-      - main     # Trigger on push to the 'main' branch (production)
-      - staging  # Trigger on push to the 'staging' branch (staging)
+      - main      # Trigger on push to the 'main' branch (production)
+      - staging   # Trigger on push to the 'staging' branch (staging)
 
 jobs:
   deploy:
@@ -28,11 +28,10 @@ jobs:
       # Build the app
       - name: Build the app
         run: |
+          echo "Building from branch: ${{ github.ref }}"
           if [ "${{ github.ref }}" == "refs/heads/staging" ]; then
-            echo "Setting PUBLIC_URL for staging"
             PUBLIC_URL="/github-actions-deploy-test/staging" npm run build
           else
-            echo "Setting PUBLIC_URL for production"
             PUBLIC_URL="/github-actions-deploy-test" npm run build
           fi
 
@@ -40,7 +39,6 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages             # Deploy to the gh-pages branch
-          folder: build                # Folder containing the build output
+          branch: ${{ github.ref == 'refs/heads/staging' && 'staging-pages' || 'gh-pages' }}  # Set branch based on environment
+          folder: build  # The folder containing the build output
           token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
-          target-folder: ${{ github.ref == 'refs/heads/staging' && 'staging' || '.' }}  # Set the deploy folder based on the branch
