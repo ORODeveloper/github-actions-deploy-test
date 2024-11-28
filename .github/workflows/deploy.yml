@@ -31,16 +31,16 @@ jobs:
         run: npm install
 
       # Build the app
-      - name: Build the app
-        run: |
-          echo "Deploying from branch: ${{ github.ref }}"
-          if [ "${{ github.ref }}" == "refs/heads/staging" ]; then
-            echo "Setting PUBLIC_URL for staging"
-            PUBLIC_URL="/github-actions-deploy-test/staging" npm run build
-          else
-            echo "Setting PUBLIC_URL for production"
-            PUBLIC_URL="/github-actions-deploy-test" npm run build
-          fi
+      # - name: Build the app
+      #   run: |
+      #     echo "Deploying from branch: ${{ github.ref }}"
+      #     if [ "${{ github.ref }}" == "refs/heads/staging" ]; then
+      #       echo "Setting PUBLIC_URL for staging"
+      #       PUBLIC_URL="/github-actions-deploy-test/staging" npm run build
+      #     else
+      #       echo "Setting PUBLIC_URL for production"
+      #       PUBLIC_URL="/github-actions-deploy-test" npm run build
+      #     fi
 
       # Deploy to GitHub Pages (staging or production)
       - name: Deploy to GitHub Pages
@@ -49,4 +49,4 @@ jobs:
           branch: gh-pages             # Deploy to the gh-pages branch
           folder: build                # Folder containing the build output
           token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
-          # destination-folder: ${{ github.ref == 'refs/heads/staging' && 'staging' || 'staging' }}  # Set the deploy folder based on the branch
+          destination-folder: ${{ github.ref == 'refs/heads/staging' && 'staging' || '.' }}  # Set the deploy folder based on the branch
