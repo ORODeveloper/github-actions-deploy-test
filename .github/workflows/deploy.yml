@@ -29,7 +29,7 @@ jobs:
       - name: Build the app
         run: |
           echo "Deploying from branch: ${{ github.ref }}"
-          if [ "${{ github.ref }}"" == "refs/heads/staging" ]; then
+          if [ "${{ github.ref }}" == "refs/heads/staging" ]; then
             PUBLIC_URL="/github-actions-deploy-test/staging" npm run build
           else
             echo "Setting PUBLIC_URL for production"
