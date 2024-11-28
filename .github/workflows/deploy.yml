@@ -15,6 +15,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Log GitHub Ref
+      - name: Log GitHub Ref
+        run: |
+          echo "GitHub Ref: ${{ github.ref }}"
+
       # Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -25,21 +30,23 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Build the app with dynamic PUBLIC_URL
+      # Build the app
       - name: Build the app
         run: |
           echo "Deploying from branch: ${{ github.ref }}"
           if [ "${{ github.ref }}" == "refs/heads/staging" ]; then
+            echo "Setting PUBLIC_URL for staging"
             PUBLIC_URL="/github-actions-deploy-test/staging" npm run build
           else
             echo "Setting PUBLIC_URL for production"
             PUBLIC_URL="/github-actions-deploy-test" npm run build
           fi
 
-      # Deploy to GitHub Pages
+      # Deploy to GitHub Pages (staging or production)
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages             # Deploy to the gh-pages branch
           folder: build                # Folder containing the build output
           token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
+          destination-folder: ${{ github.ref == 'refs/heads/staging' && 'staging' || '.' }}  # Set the deploy folder based on the branch
